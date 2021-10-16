@@ -5,4 +5,4 @@
  @author: Hishikawa,
 """
 
-print("Hello,World!!!")
+print("test")
