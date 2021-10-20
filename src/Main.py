@@ -4,9 +4,10 @@
 
  @author: 
 """
+#imports
 import panel_gui
 
-panel_gui.main_gui()
+#process
+panel_gui.main_gui()    # gui表示
 
 
-print("test")
