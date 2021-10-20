@@ -4,7 +4,9 @@
 
  @author: 
 """
+import panel_gui
 
+panel_gui.main_gui()
 
 
 print("test")
