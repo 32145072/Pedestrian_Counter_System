@@ -1,73 +1,124 @@
-#This is create GUI code
-
-#import 
+#import
 import tkinter as tk
-from tkinter import Button, font
-from tkinter.constants import BOTTOM, COMMAND, LEFT, NE, S, TOP, TRUE, UNDERLINE, W
+from tkinter import Button, Widget, font
+from tkinter.constants import BOTTOM, CENTER, COMMAND, LEFT, N, NE, S, TOP, TRUE, UNDERLINE, W
 from tkinter import messagebox
 import tkinter.font as tkFont
+from tkinter import ttk
 
-#home画面
+#==================
+#   関数定義(event類)
+#==================
+def changePage(page):
+    # MainPageを上位層にする
+    page.tkraise()
 
-#基盤
-root = tk.Tk()
-root.geometry(
-    # "480x320"
-    "1920x1080"
-)
-root.title("Pedestrian_Counter_System") #window title
+def touch_text_tapped(): 
+    messagebox.showinfo("info","画面をタップしました。")
 
-#events
-def help_btn_clicked():  #ヘルプボタンが押されたときの処理
-    messagebox.showinfo("タイトル", "ボタンがクリックされました")   
+#================   
+#
+#================ 
+def main() -> None:
+    #基盤
+    root = tk.Tk()
+    root.geometry("1920x1080")
+    root.title("Pedestrian_Counter_System") #window title
 
-def touch_text_tapped():
-    messagebox.showinfo("タイトル","画面をタップしました。")
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
 
-#widget
-help_button = tk.Button(
-    root,
-    text="help",
-    font = tkFont.Font(family="Arial",size=40),
-    width=10,height=1,
-    border=1,
-    command= help_btn_clicked     #ボタンが押されたら
-)
-date_text = tk.Label(
-    root,
-    text = "                x月y日の通行回数は",
-    font = tkFont.Font(family="Arial",size=40)
+    #==============
+    #   home画面
+    #==============
 
-)
-count_text = tk.Label(
-    root,
-    text = "\nXXX",
-    font = tkFont.Font(family="Arial",size=120)
-    
-)
-touch_text = tk.Button(
-    root,
-    text = "\n\n\n画面をタップしてください",
-    font = tkFont.Font(family="Arial",size=40,underline=TRUE),
-    border = 0,
-    command = touch_text_tapped
-)
+    home = tk.Frame(root)
 
-#widgetの配置
-help_button.pack(
-    anchor = NE
-)
-date_text.pack(
-    anchor=W
-)
-count_text.pack(
-    anchor="center"
-)
-touch_text.pack(
-    anchor=S
-)
+    help_button = tk.Button(
+            home,
+            text="<< Help >>",
+            font = tkFont.Font(family="Arial",size=40),
+            width=10,height=1,
+            border=1,
+            relief="groove",
+            command= lambda : changePage(help_page)     #ボタンが押されたら
+        )
+    date_text = tk.Label(
+        home,
+        text = "\n\tx月y日の通行回数は\n",
+        font = tkFont.Font(family="Arial",size=50)
+
+    )
+    count_text = tk.Label(
+        home,
+        text = "XXX",
+        font = tkFont.Font(family="Arial",size=140)
+        
+    )
+    touch_text = tk.Button(
+        home,
+        text = "\n\n\n画面をタップしてください",
+        font = tkFont.Font(family="Arial",size=40,underline=TRUE),
+        width=80,height=20,
+        border = 0,
+        command = touch_text_tapped
+    )
+
+    home.grid(row=0, column=0, sticky="nsew")
+
+    #================
+    #   home_widget配置
+    #================
+    help_button.pack(
+        anchor = NE
+    )
+    date_text.pack(
+        anchor= W
+    )
+    count_text.pack(
+        anchor= CENTER
+    )
+    touch_text.pack(
+        anchor= S
+    )
+
+    #==============
+    #   help画面
+    #==============
+
+    help_page = tk.Frame(root)
+
+    help_test_text = tk.Label(
+        help_page,
+        text = "ここはヘルプページです",
+        font = tkFont.Font(family="Arial",size=30)
+        
+    )
+
+    #========================
+    #   help_widget配置
+    #========================
+
+    help_test_text.pack(
+        anchor=CENTER
+    )
+
+    #=============
+    #   画面配置
+    #=============
+
+    # help_pageを配置
+    help_page.grid(row=0, column=0, sticky="nsew")
+
+    # homeを上位層にする
+    home.tkraise()
+
+    # プログラムを始める
+    root.mainloop()
 
 
-#アプリ実行
-root.mainloop()
-
+#===============
+# 本体処理  (プログラム起動したときに実行)
+#===============
+if __name__ == "__main__":
+    main()
