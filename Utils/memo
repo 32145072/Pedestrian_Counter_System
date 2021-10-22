@@ -1,4 +1,6 @@
-reference:
+================
+    reference
+================
 
 命名規則: https://pep8-ja.readthedocs.io/ja/latest/
          https://qiita.com/simonritchie/items/bb06a7521ae6560738a7
@@ -11,3 +13,12 @@ VScodeでMDをプレビューする： https://atmarkit.itmedia.co.jp/ait/articl
 GUI Builder(wxpython)：https://www.zacoding.com/post/wxpython-with-wxglade/
 
 tkinter widget 配置: https://denno-sekai.com/tkinter-pack/
+
+
+=============
+    idea
+=============
+
+pythonでhtmlを使ってGUIを作る   => https://qiita.com/inoory/items/f431c581332c8d500a3b
+
+

@@ -1,13 +1,15 @@
 """
  2021/10/12　～　202x/xx/xx
- pbl2021_pedestrian_counter_system's Main code
+ pbl2021_pedestrian_counter_system's main code
 
  @author: 
 """
-#imports
+#   -------imports-------
 import panel_gui
 
-#process
+
+#   -------processes------
+
 panel_gui.main_gui()    # gui表示
 
 
