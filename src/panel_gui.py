@@ -10,26 +10,75 @@
 
 import datetime as dt
 import tkinter as tk
-from tkinter import Button, Widget, font
-from tkinter.constants import BOTTOM, CENTER, COMMAND, LEFT, N, NE, NW, RIDGE, RIGHT, S, TOP, TRUE, UNDERLINE, W
+from tkinter import Button, Toplevel, Widget, font
+from tkinter.constants import ACTIVE, BOTTOM, CENTER, COMMAND, LEFT, N, NE, NW, RIDGE, RIGHT, S, TOP, TRUE, UNDERLINE, W
 from tkinter import messagebox
 import tkinter.font as tkFont
 from tkinter import ttk
 
 
-#==================
+#=========
 #   変数
-#==================
+#=========
 
 now_date = dt.datetime.now()
 bg_color = "gray94" #default == gray94
 
+open_select_window = False
+
 #==================
 #   関数定義(event類)
 #==================
-def change_page(page):  #画面繊維させる関数
+def change_page(page):  #画面遷移させる関数
     # 引数:pageを上位層にする
     page.tkraise()
+
+def close_window(self):
+    self.destroy()
+
+def switchButtonState(self):
+    if (self["state"] == tk.NORMAL):
+        self["state"] = tk.DISABLED
+    else:
+        self["state"] = tk.NORMAL
+
+def select_window(page,to):
+    window = tk.Toplevel(page)
+    window.geometry("720x480+600+250")
+    window.protocol('WM_DELETE_WINDOW', (lambda: 'pass')()) #ウィンドウの右上の×を無効化
+    close_button = tk.Button(
+        window,
+        text = "close",
+        width=10,height=5,border=3,
+        command = lambda : [close_window(window),switchButtonState(to)])
+    hour_button = tk.Button(
+        window,
+        text="  Hour  ",
+        font = tkFont.Font(family="Arial",size=30),
+        pady=8,
+        padx=90
+    )
+    day_button = tk.Button(
+        window,
+        text="  Day  ",
+        font = tkFont.Font(family="Arial",size=30),
+        pady=8,
+        padx=95
+
+    )
+    week_button = tk.Button(
+        window,
+        text="  Week  ",
+        font = tkFont.Font(family="Arial",size=30),
+        pady=8,
+        padx=80        
+    )
+    close_button.pack(anchor=NE)
+    hour_button.pack(anchor=CENTER,pady=15)
+    day_button.pack(anchor=CENTER,pady=20)
+    week_button.pack(anchor=CENTER,pady=25)
+    
+    
 
 def touch_text_tapped(): 
     messagebox.showinfo("info","画面をタップしました。")
@@ -122,7 +171,6 @@ def main_gui():
         bg = bg_color,
         text = "ここはヘルプページです",
         font = tkFont.Font(family="Arial",size=30)
-        
     )
 
     home_button = tk.Button(
@@ -147,6 +195,17 @@ def main_gui():
             relief="groove",
             command= lambda : change_page(select_page)     #ボタンが押されたら
         )
+    graph_button = tk.Button(
+            help_page,
+            bg = bg_color,
+            activebackground=bg_color,
+            text="<< graph >>",
+            font = tkFont.Font(family="Arial",size=40),
+            width=10,height=1,
+            border=1,
+            relief="groove",
+            command= lambda : change_page(graph_page)     #ボタンが押されたら
+        )
 
     #========================
     #   help_widgets配置
@@ -156,7 +215,10 @@ def main_gui():
         anchor = NE
     )
     select_button.pack(
-        anchor= NE        
+        anchor = NE        
+    )
+    graph_button.pack(
+        anchor = NE
     )
     help_test_text.pack(
         anchor=CENTER
@@ -216,6 +278,68 @@ def main_gui():
         pady=300
     )
 
+    #==================
+    #   graph画面
+    #==================
+
+    graph_page = tk.Frame(root)
+    graph_page.configure(bg=bg_color)
+
+    #create widgets
+    graph_change_range = tk.Button(
+        graph_page,
+        bg = "grey30",
+        fg = "white",
+        text = "横軸の幅の変更",
+        width=20,height=1,
+        border=1,
+        pady=5,
+        relief="groove",
+        font = tkFont.Font(family="Arial",size=35),
+        command= lambda : [select_window(graph_page,graph_change_range),switchButtonState(graph_change_range)]
+    )
+
+    home_button = tk.Button(
+        graph_page,
+        bg = bg_color,
+        activebackground=bg_color,
+        text="<< Home >>",
+        font = tkFont.Font(family="Arial",size=40),
+        width=10,height=1,
+        border=1,
+        relief="groove",
+        command= lambda : change_page(home_page)     #ボタンが押されたら
+        )
+    select_button = tk.Button(
+        graph_page,
+        bg = bg_color,
+        activebackground=bg_color,
+        text="<< select >>",
+        font = tkFont.Font(family="Arial",size=40),
+        width=10,height=1,
+        border=1,
+        relief="groove",
+        command= lambda : change_page(select_page)    #ボタンが押されたら
+            
+        )
+
+    #==================
+    #   graph widget配置
+    #==================
+
+    home_button.pack(
+        side=LEFT,
+        anchor=NW
+    )
+    select_button.pack(
+        side=RIGHT,
+        anchor=NE,
+    )
+    graph_change_range.pack(
+        pady=50,
+        anchor=CENTER
+    )
+
     #=============
     #   画面配置
     #=============
@@ -223,6 +347,7 @@ def main_gui():
     # 作成したウィンドウを配置(処理的には,これを一番上に持ってくるようにすることで画面遷移させている)
     help_page.grid(row=0, column=0, sticky="nsew")
     select_page.grid(row=0, column=0, sticky="nsew")
+    graph_page.grid(row=0, column=0, sticky="nsew")
 
     # home_pageを起動時に上位層にする
     home_page.tkraise()
