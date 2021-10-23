@@ -36,7 +36,7 @@ def change_page(page):  #画面遷移させる関数
 def close_window(self):
     self.destroy()
 
-def switchButtonState(self):
+def switch_button_state(self):
     if (self["state"] == tk.NORMAL):
         self["state"] = tk.DISABLED
     else:
@@ -46,11 +46,13 @@ def select_window(page,to):
     window = tk.Toplevel(page)
     window.geometry("720x480+600+250")
     window.protocol('WM_DELETE_WINDOW', (lambda: 'pass')()) #ウィンドウの右上の×を無効化
+    window.resizable(0,0)   #ウィンドウの最大最小の無効化
+    window.configure(bg="gray60")
     close_button = tk.Button(
         window,
         text = "close",
         width=10,height=5,border=3,
-        command = lambda : [close_window(window),switchButtonState(to)])
+        command = lambda : [close_window(window),switch_button_state(to)])
     hour_button = tk.Button(
         window,
         text="  Hour  ",
@@ -296,7 +298,7 @@ def main_gui():
         pady=5,
         relief="groove",
         font = tkFont.Font(family="Arial",size=35),
-        command= lambda : [select_window(graph_page,graph_change_range),switchButtonState(graph_change_range)]
+        command= lambda : [select_window(graph_page,graph_change_range),switch_button_state(graph_change_range)]
     )
 
     home_button = tk.Button(
