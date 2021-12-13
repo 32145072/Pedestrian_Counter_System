@@ -3,7 +3,7 @@
     home_page: 基本ウィンドウ。日付や通行回数の表示を行う
     help_page: ヘルプページ。画面の操作方法など？
     select_page: グラフページの切り替えを行う   小ウィンドウを出す感じ
-    graph_page: dataをグラフ化したものを表示させる
+    graph_page: データをグラフ化したものを表示させる
 """
 
 #import
@@ -15,6 +15,7 @@ from tkinter.constants import ACTIVE, BOTTOM, CENTER, COMMAND, LEFT, N, NE, NW, 
 from tkinter import messagebox
 import tkinter.font as tkFont
 from tkinter import ttk
+import time
 
 
 #=========
@@ -26,6 +27,9 @@ bg_color = "gray94" #default == gray94
 
 open_select_window = False
 
+#   ------- time -------
+timer = time.time()
+
 #==================
 #   関数定義(event類)
 #==================
@@ -33,10 +37,11 @@ def change_page(page):  #画面遷移させる関数
     # 引数:pageを上位層にする
     page.tkraise()
 
+    
 def close_window(self):
     self.destroy()
 
-def switch_button_state(self):
+def switch_button_state(self):      #ボタン無効化
     if (self["state"] == tk.NORMAL):
         self["state"] = tk.DISABLED
     else:
@@ -117,6 +122,7 @@ def main_gui():
             border=1,
             relief="groove",
             command= lambda : change_page(help_page)     #ボタンが押されたら
+            
         )
     date_text = tk.Label(
         home_page,

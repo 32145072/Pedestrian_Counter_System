@@ -14,11 +14,19 @@ GUI Builder(wxpython)：https://www.zacoding.com/post/wxpython-with-wxglade/
 
 tkinter widget 配置: https://denno-sekai.com/tkinter-pack/
 
+ColorChooser： https://www.python-beginners.com/entry/20190523/1558595892
+
+rgb.txt： https://www.astrouw.edu.pl/~jskowron/colors-x11/rgb.html
+
 
 =============
     idea
 =============
 
 pythonでhtmlを使ってGUIを作る   => https://qiita.com/inoory/items/f431c581332c8d500a3b
+
+背景をカラーピッカーで変更させる
+
+
 
 

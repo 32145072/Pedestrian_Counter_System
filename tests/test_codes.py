@@ -1,2 +1,12 @@
-x = 90000000
-print(f'{x:,}')
+
+counter = 0
+
+def count_module(data):
+    data += 1
+    print(data)
+    
+count_module(counter)
+
+# while counter == 100:
+#     count_module(counter)
+#     print(counter)
