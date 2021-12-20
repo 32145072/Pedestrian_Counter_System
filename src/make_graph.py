@@ -62,29 +62,36 @@ save_dir = "src"
 
 #   ------- 処理 -------
 
-png_num = 0    # 画像番号
+def make_graph():
+    png_num = 0    # 画像番号
 
-# 時毎グラフ作成＆保存
-for i in zip(WIDTH_DATA_hour, LENGTH_DATA_hour):
-    png_num+=1
-    plt.rcParams["font.size"] = 14    # 全体の文字サイズの変更(デフォルトは12)
-    fig,ax = plt.subplots(facecolor="white")    # キャンバスとxy軸で表す部分を作成
-    ax.plot(i[0], i[1] ,marker='o')
-    ax.set_xlabel("時間")
-    ax.set_ylabel("通行人数", rotation='vertical')
-    ax.set_title("1時間毎")
-    ax.grid()
-    fig.savefig(os.path.join(save_dir,"graph"+str(png_num)+".png"))
+    # 時毎グラフ作成＆保存
+    for i in zip(WIDTH_DATA_hour, LENGTH_DATA_hour):
+        png_num+=1
+        plt.rcParams["font.size"] = 14    # 全体の文字サイズの変更(デフォルトは12)
+        fig,ax = plt.subplots(facecolor="white")    # キャンバスとxy軸で表す部分を作成
+        ax.plot(i[0], i[1] ,marker='o')
+        ax.set_xlabel("時間")
+        ax.set_ylabel("通行人数", rotation='vertical')
+        ax.set_title("1時間毎")
+        ax.grid()
+        fig.savefig(os.path.join(save_dir,"graph"+str(png_num)+".png"))
 
-# 日毎グラフ作成＆保存
-for i in zip(WIDTH_DATA_day, LENGTH_DATA_day):    
-    png_num+=1
-    plt.rcParams["font.size"] = 14
-    fig,ax = plt.subplots(facecolor="white")
-    ax.plot(i[0], i[1] ,marker='o')
-    ax.set_xlabel("日付")
-    ax.set_ylabel("通行人数", rotation='vertical')
-    ax.set_title("1日毎")
-    ax.grid()
-    fig.savefig(os.path.join(save_dir,"graph"+str(png_num)+".png"))
+    # 日毎グラフ作成＆保存
+    for i in zip(WIDTH_DATA_day, LENGTH_DATA_day):    
+        png_num+=1
+        plt.rcParams["font.size"] = 14
+        fig,ax = plt.subplots(facecolor="white")
+        ax.plot(i[0], i[1] ,marker='o')
+        ax.set_xlabel("日付")
+        ax.set_ylabel("通行人数", rotation='vertical')
+        ax.set_title("1日毎")
+        ax.grid()
+        fig.savefig(os.path.join(save_dir,"graph"+str(png_num)+".png"))
+        
+    
+    
+if __name__ == "__main__":  #該当のファイルがコマンドラインからスクリプトとして実行された場合にのみ以降の処理を実行する
+    make_graph()
+
    

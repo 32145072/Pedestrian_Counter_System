@@ -1,20 +1,12 @@
-import time
-import datetime
-start_time = 0
-end_time = 0
-start_time = time.perf_counter()
-end_time = time.perf_counter()
-timer = end_time - start_time
+import tkinter as tk
+window = tk.Tk()
+window.geometry("1920x1080")
+window.title("画像表示")
+canvas = tk.Canvas(window, bg="white", height=1920, width=1080)
 
+canvas.place(x=0,y=0)
 
-print(timer)
+img = tk.PhotoImage(file="src\pic\help_1.png",width=1920,height=1080)
+canvas.create_image(0,-30,image=img,anchor=tk.NW)
 
-# time = datetime.datetime.now()
-
-# print(time.second)
-
-# while True:
-#     if time.second <= 10:
-#         print(time.second)
-#     else:
-#         break
+window.mainloop()

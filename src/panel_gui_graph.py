@@ -3,19 +3,20 @@
     home_page: 基本ウィンドウ。日付や通行回数の表示を行う
     help_page: ヘルプページ。画面の操作方法など？
     select_page: グラフページの切り替えを行う   小ウィンドウを出す感じ
-    graph_page: データをグラフ化したものを表示させる
+    graph_page: dataをグラフ化したものを表示させる
 """
 
 #import
 
 import datetime as dt
 import tkinter as tk
-from tkinter import Button, Canvas, Toplevel, Widget, font
+from tkinter import Button, Toplevel, Widget, font
 from tkinter.constants import ACTIVE, BOTTOM, CENTER, COMMAND, LEFT, N, NE, NW, RIDGE, RIGHT, S, TOP, TRUE, UNDERLINE, W
 from tkinter import messagebox
 import tkinter.font as tkFont
 from tkinter import ttk
-import time
+import os
+from create_graphs import create_graphs
 
 
 #=========
@@ -27,17 +28,10 @@ bg_color = "gray94" #default == gray94
 
 open_select_window = False
 
-#   ------- time -------
-timer = time.time()
-
 #==================
 #   関数定義(event類)
 #==================
-def change_page(page):  #画面遷移させる関数
-    # 引数:pageを上位層にする
-    page.tkraise()
 
-    
 def close_window(self):
     self.destroy()
 
@@ -47,53 +41,21 @@ def switch_button_state(self):      #ボタン無効化
     else:
         self["state"] = tk.NORMAL
 
-def select_window(page,to):
-    window = tk.Toplevel(page)
-    window.geometry("720x480+600+250")
-    window.protocol('WM_DELETE_WINDOW', (lambda: 'pass')()) #ウィンドウの右上の×を無効化
-    window.resizable(0,0)   #ウィンドウの最大最小の無効化
-    window.configure(bg="gray60")
-    close_button = tk.Button(
-        window,
-        text = "close",
-        width=10,height=5,border=3,
-        command = lambda : [close_window(window),switch_button_state(to)])
-    hour_button = tk.Button(
-        window,
-        text="  Hour  ",
-        font = tkFont.Font(family="Arial",size=30),
-        pady=8,
-        padx=90
-    )
-    day_button = tk.Button(
-        window,
-        text="  Day  ",
-        font = tkFont.Font(family="Arial",size=30),
-        pady=8,
-        padx=95
-
-    )
-    week_button = tk.Button(
-        window,
-        text="  Week  ",
-        font = tkFont.Font(family="Arial",size=30),
-        pady=8,
-        padx=80        
-    )
-    close_button.pack(anchor=NE)
-    hour_button.pack(anchor=CENTER,pady=15)
-    day_button.pack(anchor=CENTER,pady=20)
-    week_button.pack(anchor=CENTER,pady=25)
-    
-    
-
 def touch_text_tapped(): 
     messagebox.showinfo("info","画面をタップしました。")
 
 #===================
 #   create windows
 #===================
+
 def main_gui():
+    
+    def change_page(page):  #画面遷移させる関数
+        # 引数:pageを上位層にする
+        page.tkraise()
+        if page==graph_page:
+            create_graphs()
+    
     #基盤
     root = tk.Tk()
     root.geometry("1920x1080")
@@ -122,7 +84,6 @@ def main_gui():
             border=1,
             relief="groove",
             command= lambda : change_page(help_page)     #ボタンが押されたら
-            
         )
     date_text = tk.Label(
         home_page,
@@ -180,68 +141,54 @@ def main_gui():
         text = "ここはヘルプページです",
         font = tkFont.Font(family="Arial",size=30)
     )
-    
-    help_1 = tk.PhotoImage(file="src\pic\help_1.png")
-    
-    Canvas = tk.Canvas(help_page,bg="black",width=1920,height=1080)
-    Canvas.place(x=0,y=0)
 
-#region button widget
+    home_button = tk.Button(
+            help_page,
+            bg = bg_color,
+            activebackground=bg_color,
+            text="<< Home >>",
+            font = tkFont.Font(family="Arial",size=40),
+            width=10,height=1,
+            border=1,
+            relief="groove",
+            command= lambda : change_page(home_page)     #ボタンが押されたら
+        )
+    select_button = tk.Button(
+            help_page,
+            bg = bg_color,
+            activebackground=bg_color,
+            text="<< select >>",
+            font = tkFont.Font(family="Arial",size=40),
+            width=10,height=1,
+            border=1,
+            relief="groove",
+            command= lambda : change_page(select_page)     #ボタンが押されたら
+        )
+    graph_button = tk.Button(
+            help_page,
+            bg = bg_color,
+            activebackground=bg_color,
+            text="<< graph >>",
+            font = tkFont.Font(family="Arial",size=40),
+            width=10,height=1,
+            border=1,
+            relief="groove",
+            command= lambda : change_page(graph_page)     #ボタンが押されたら
+        )
 
-
-    # home_button = tk.Button(
-    #         help_page,
-    #         bg = bg_color,
-    #         activebackground=bg_color,
-    #         text="<< Home >>",
-    #         font = tkFont.Font(family="Arial",size=40),
-    #         width=10,height=1,
-    #         border=1,
-    #         relief="groove",
-    #         command= lambda : change_page(home_page)     #ボタンが押されたら
-    #     )
-    # select_button = tk.Button(
-    #         help_page,
-    #         bg = bg_color,
-    #         activebackground=bg_color,
-    #         text="<< select >>",
-    #         font = tkFont.Font(family="Arial",size=40),
-    #         width=10,height=1,
-    #         border=1,
-    #         relief="groove",
-    #         command= lambda : change_page(select_page)     #ボタンが押されたら
-    #     )
-    # graph_button = tk.Button(
-    #         help_page,
-    #         bg = bg_color,
-    #         activebackground=bg_color,
-    #         text="<< graph >>",
-    #         font = tkFont.Font(family="Arial",size=40),
-    #         width=10,height=1,
-    #         border=1,
-    #         relief="groove",
-    #         command= lambda : change_page(graph_page)     #ボタンが押されたら
-    #     )
-#endregion
     #========================
     #   help_widgets配置
     #========================
-    
-#region button widget 配置
 
-
-    # home_button.pack(
-    #     anchor = NE
-    # )
-    # select_button.pack(
-    #     anchor = NE        
-    # )
-    # graph_button.pack(
-    #     anchor = NE
-    # )
-#endregion
-    Canvas.create_image(0,0,image=help_1,anchor=tk.NW)
-    
+    home_button.pack(
+        anchor = NE
+    )
+    select_button.pack(
+        anchor = NE        
+    )
+    graph_button.pack(
+        anchor = NE
+    )
     help_test_text.pack(
         anchor=CENTER
     )
@@ -306,7 +253,103 @@ def main_gui():
 
     graph_page = tk.Frame(root)
     graph_page.configure(bg=bg_color)
-
+    
+    graph_index=3
+    def right():
+        global graph_index
+        graph_index=(graph_index+1)%len(graphs)
+        canvas.delete('g')
+        canvas.create_image(0,0,image=graphs[graph_index],anchor=NW,tag='g')
+    def left():
+        global graph_index
+        graph_index=(graph_index-1)%len(graphs)
+        canvas.delete('g')
+        canvas.create_image(0,0,image=graphs[graph_index],anchor=NW,tag='g')
+    
+    graphs=[
+        tk.PhotoImage(file=os.path.join("src","graph1.png")).zoom(2,2),
+        tk.PhotoImage(file=os.path.join("src","graph2.png")).zoom(2,2),
+        tk.PhotoImage(file=os.path.join("src","graph3.png")).zoom(2,2),
+        tk.PhotoImage(file=os.path.join("src","graph4.png")).zoom(2,2)
+    ]
+    
+    def hour():
+        graphs.clear()
+        for i in range(1,5):
+            graphs.append(tk.PhotoImage(file=os.path.join("src",f"graph{i}.png")).zoom(2,2))
+        canvas.delete('g')
+        canvas.create_image(0,0,image=graphs[graph_index],anchor=NW,tag='g')
+    
+    def day():
+        graphs.clear()
+        for i in range(5,9):
+            graphs.append(tk.PhotoImage(file=os.path.join("src",f"graph{i}.png")).zoom(2,2))
+        canvas.delete('g')
+        canvas.create_image(0,0,image=graphs[graph_index],anchor=NW,tag='g')
+    
+    def select_window(page,to):
+        window = tk.Toplevel(page)
+        window.geometry("720x480+600+250")
+        window.protocol('WM_DELETE_WINDOW', (lambda: 'pass')()) #ウィンドウの右上の×を無効化
+        window.resizable(0,0)   #ウィンドウの最大最小の無効化
+        window.configure(bg="gray60")
+        close_button = tk.Button(
+            window,
+            text = "close",
+            width=10,height=5,border=3,
+            command = lambda : [close_window(window),switch_button_state(to)])
+        hour_button = tk.Button(
+            window,
+            text="  Hour  ",
+            font = tkFont.Font(family="Arial",size=30),
+            pady=8,
+            padx=90,
+            command=lambda : hour()
+        )
+        day_button = tk.Button(
+            window,
+            text="  Day  ",
+            font = tkFont.Font(family="Arial",size=30),
+            pady=8,
+            padx=95,
+            command=lambda : day()
+        )
+        week_button = tk.Button(
+            window,
+            text="  Week  ",
+            font = tkFont.Font(family="Arial",size=30),
+            pady=8,
+            padx=80        
+        ) 
+        close_button.pack(anchor=NE)
+        hour_button.pack(anchor=CENTER,pady=15)
+        day_button.pack(anchor=CENTER,pady=20)
+        week_button.pack(anchor=CENTER,pady=25)
+    
+    graph_change_right = tk.Button(
+        graph_page,
+        bg = "grey30",
+        fg = "white",
+        text = "▶",
+        width=1,height=1,
+        border=1,
+        relief="groove",
+        font = tkFont.Font(family="Arial",size=35),
+        command=lambda : right()
+    )
+    
+    graph_change_left = tk.Button(
+        graph_page,
+        bg = "grey30",
+        fg = "white",
+        text = "◀",
+        width=1,height=1,
+        border=1,
+        relief="groove",
+        font = tkFont.Font(family="Arial",size=35),
+        command=lambda : left()
+    )
+    
     #create widgets
     graph_change_range = tk.Button(
         graph_page,
@@ -344,7 +387,9 @@ def main_gui():
         command= lambda : change_page(select_page)    #ボタンが押されたら
             
         )
-
+    
+    canvas = tk.Canvas(graph_page,bg="grey30",width=432*2,height=288*2)
+    
     #==================
     #   graph widget配置
     #==================
@@ -361,6 +406,11 @@ def main_gui():
         pady=50,
         anchor=CENTER
     )
+    graph_change_right.pack(side=RIGHT)
+    graph_change_left.pack(side=LEFT)
+    
+    canvas.pack(anchor=CENTER)
+    canvas.create_image(0,0,image=graphs[graph_index],anchor=NW,tag='g')
 
     #=============
     #   画面配置
